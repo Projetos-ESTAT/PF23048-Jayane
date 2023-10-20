@@ -22,3 +22,17 @@ source("rdocs/source/packages.R")
 # de teste depreciados, ou ao menos deixando como comentário. Dê preferência
 # as funções dos pacotes contidos no Tidyverse para realizar suas análises.
 # ---------------------------------------------------------------------------- #
+
+banco <- read.xlsx("banco/banco_candidatos.xlsx", sheetIndex = 1)
+
+
+banco2 <- banco %>% group_by(ANO_ELEICAO,SG_UF,DS_CARGO) %>% 
+  mutate(Ganhou = ifelse(porcentagem_votos==max(porcentagem_votos),"SIM","NÃO"))
+
+#table(banco2$ANO_ELEICAO,banco2$Ganhou, banco2$DS_CARGO)
+#table(banco2$ANO_ELEICAO,banco2$SG_UF)
+
+bancoGov <- banco2 %>% filter(DS_CARGO=="GOVERNADOR")
+bancoDep <- banco2 %>% filter(DS_CARGO=="DEPUTADO ESTADUAL")
+
+
