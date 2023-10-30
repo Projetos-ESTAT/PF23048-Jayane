@@ -45,3 +45,16 @@ source("rdocs/source/packages.R")
 # arquivo_saida <- "resultados.xlsx"
 # 
 # write.xlsx(dados_combinados, file = arquivo_saida, sheetName = "1994-2022")
+
+
+setwd('D:/Downloads/ESTAT')
+library(readxl)
+library(tidyverse)
+library(xlsx)  
+banco <- read_excel('base_distritais.xlsx')
+
+resultados<-banco%>%
+  filter(str_detect(DS_CARGO, "DEPUTADO DISTRITAL"))
+
+arquivo_saida <- "banco_distritais.xlsx"
+write.xlsx(resultados, file = arquivo_saida)
