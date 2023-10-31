@@ -50,8 +50,9 @@ source("rdocs/source/packages.R")
 setwd('D:/Downloads/ESTAT')
 library(readxl)
 library(tidyverse)
-library(xlsx)  
 banco <- read_excel('base_distritais.xlsx')
 
 resultados<-banco%>%
   filter(str_detect(DS_CARGO, "DEPUTADO DISTRITAL"))
+
+write.csv2(resultados, "banco_distritais.xlsx")
