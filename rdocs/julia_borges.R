@@ -55,6 +55,3 @@ banco <- read_excel('base_distritais.xlsx')
 
 resultados<-banco%>%
   filter(str_detect(DS_CARGO, "DEPUTADO DISTRITAL"))
-
-arquivo_saida <- "banco_distritais.xlsx"
-write.xlsx(resultados, file = arquivo_saida)
