@@ -23,16 +23,24 @@ source("rdocs/source/packages.R")
 # as funções dos pacotes contidos no Tidyverse para realizar suas análises.
 # ---------------------------------------------------------------------------- #
 
-banco <- read.xlsx("banco/banco_candidatos.xlsx", sheetIndex = 1)
+banco_deputados <- readxl::read_xlsx("banco/Base_deputados estaduais_1986-2022.xlsx")
+
+banco_deputados <- banco_deputados[,1:16]
 
 
-banco2 <- banco %>% group_by(ANO_ELEICAO,SG_UF,DS_CARGO) %>% 
-  mutate(Ganhou = ifelse(porcentagem_votos==max(porcentagem_votos),"SIM","NÃO"))
+table(banco_deputados$DS_CARGO)
+banco_deputados <- banco_deputados %>% filter(DS_CARGO == "DEPUTADO ESTADUAL")
 
-#table(banco2$ANO_ELEICAO,banco2$Ganhou, banco2$DS_CARGO)
-#table(banco2$ANO_ELEICAO,banco2$SG_UF)
 
-bancoGov <- banco2 %>% filter(DS_CARGO=="GOVERNADOR")
-bancoDep <- banco2 %>% filter(DS_CARGO=="DEPUTADO ESTADUAL")
+#Porcentagem ou decimal?
+#banco_deputados <- banco_deputados %>% mutate(porcentagem_votos = porcentagem_votos/100)
 
+banco_deputados2 <- banco_deputados %>% group_by(ANO_ELEICAO,SG_UF) %>%
+  summarise(Oi = sum(ifelse(gov_oppos=="O",porcentagem_votos,0)),
+            Oi2 = sum((ifelse(gov_oppos=="O",porcentagem_votos,0))^2),
+            O=Oi2/Oi,
+            Gi = sum(ifelse(gov_oppos=="G",porcentagem_votos,0)),
+            Gi2 = sum((ifelse(gov_oppos=="G",porcentagem_votos,0))^2),
+            G=Gi2/Gi,
+            IC = 1- abs(O-G)/100) 
 
