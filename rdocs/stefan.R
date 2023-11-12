@@ -27,7 +27,7 @@ banco_deputados <- readxl::read_xlsx("banco/Base_deputados estaduais_1986-2022.x
 
 banco_deputados <- banco_deputados[,1:16]
 
-
+#Só Deputados Estaduais
 table(banco_deputados$DS_CARGO)
 banco_deputados <- banco_deputados %>% filter(DS_CARGO == "DEPUTADO ESTADUAL")
 
@@ -44,3 +44,20 @@ banco_deputados2 <- banco_deputados %>% group_by(ANO_ELEICAO,SG_UF) %>%
             G=Gi2/Gi,
             IC = 1- abs(O-G)/100) 
 
+
+#gráficos de linha
+#Bivariado n vai rolar com 26 estados
+
+
+#Vários Univariados
+for (i in unique(banco_deputados2$SG_UF)) {
+banco_deputados3 <- banco_deputados2 %>% filter(SG_UF == i)
+ggplot(banco_deputados3) +
+  aes(x = ANO_ELEICAO, y = IC, group = 1) +
+  geom_line(size = 1, colour = "#A11D21") +
+  geom_point(colour = "#A11D21", size = 2) +
+  labs(x = "Ano", y = "IC") +
+  theme_estat()
+b <- paste("resultados/Stefan/Linhas_",i,".pdf", sep = "")
+ggsave(filename = file.path(b), width = 158, height = 93, units = "mm")
+}
