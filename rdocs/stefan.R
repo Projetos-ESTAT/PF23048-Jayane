@@ -40,6 +40,8 @@ banco_deputados2 <- banco_deputados %>% group_by(ANO_ELEICAO,SG_UF) %>%
             G=Gi2/Gi,
             IC = 1- abs(O-G)/100) 
 
+write.csv2(banco_deputados2, "IC_deputados.xlsx")
+
 
 #gráficos de linha
 #Bivariado n vai rolar com 26 estados
@@ -55,7 +57,7 @@ a <- ggplot(banco_deputados3) +
   labs(x = "Ano", y = "IC") +
   theme_estat() +
   ylim(floor(20*min(banco_deputados3$IC))/20,1)
-b <- paste("resultados/Stefan/Linhas_",i,".pdf", sep = "")
+b <- paste("resultados/Stefan/Linhas_",i,".jpeg", sep = "")
 ggsave(filename = file.path(b), plot = a, width = 158, height = 93, units = "mm")
 }
 
