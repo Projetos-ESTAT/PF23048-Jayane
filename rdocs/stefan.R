@@ -48,17 +48,30 @@ write.csv2(banco_deputados2, "IC_deputados.xlsx")
 
 
 #Vários Univariados
+# for (i in unique(banco_deputados2$SG_UF)) {
+# banco_deputados3 <- banco_deputados2 %>% filter(SG_UF == i)
+# a <- ggplot(banco_deputados3) +
+#   aes(x = ANO_ELEICAO, y = IC, group = 1) +
+#   geom_line(size = 1, colour = "#A11D21") +
+#   geom_point(colour = "#A11D21", size = 2) +
+#   labs(x = "Ano", y = "IC") +
+#   theme_estat() +
+#   ylim(floor(20*min(banco_deputados3$IC))/20,1)
+# b <- paste("resultados/Stefan/Linhas_",i,".jpeg", sep = "")
+# ggsave(filename = file.path(b), plot = a, width = 158, height = 93, units = "mm")
+# }
+
 for (i in unique(banco_deputados2$SG_UF)) {
-banco_deputados3 <- banco_deputados2 %>% filter(SG_UF == i)
-a <- ggplot(banco_deputados3) +
-  aes(x = ANO_ELEICAO, y = IC, group = 1) +
-  geom_line(size = 1, colour = "#A11D21") +
-  geom_point(colour = "#A11D21", size = 2) +
-  labs(x = "Ano", y = "IC") +
-  theme_estat() +
-  ylim(floor(20*min(banco_deputados3$IC))/20,1)
-b <- paste("resultados/Stefan/Linhas_",i,".jpeg", sep = "")
-ggsave(filename = file.path(b), plot = a, width = 158, height = 93, units = "mm")
+  banco_deputados3 <- banco_deputados2 %>% filter(SG_UF == i)
+  a <- ggplot(banco_deputados3) +
+    aes(x = ANO_ELEICAO, y = IC, group = 1) +
+    geom_line(size = 1, colour = "#A11D21") +
+    geom_point(colour = "#A11D21", size = 2) +
+    labs(x = " Election Year", y = "Competitiveness") +
+    theme_estat() +
+    ylim(0,1)
+  b <- paste("resultados/Stefan/Linhas_",i,".jpeg", sep = "")
+  ggsave(filename = file.path(b), plot = a, width = 158, height = 93, units = "mm")
 }
 
 
