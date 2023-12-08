@@ -2,7 +2,7 @@ ALOCADOS POR MATÉRIA:
 
 BANCO DE DADOS: 
 
-Mateus Silva
+Mateus Silva e
 Júlia Garcia
 
 EXPLORATÓRIA:
