@@ -23,6 +23,9 @@ source("rdocs/source/packages.R")
 # as funções dos pacotes contidos no Tidyverse para realizar suas análises.
 # ---------------------------------------------------------------------------- #
 
+pacman::p_load(ggcorrplot, knitr,showtext, kableExtra, data.table, tidyr,SnowballC,
+               wordcloud,tm,stringr,gridExtra)
+
 banco_deputados <- readxl::read_xlsx("banco/Base_deputados estaduais_1986-2022.xlsx")
 
 banco_deputados <- banco_deputados[,1:16]
@@ -61,6 +64,8 @@ write.csv2(banco_deputados2, "IC_deputados.xlsx")
 # ggsave(filename = file.path(b), plot = a, width = 158, height = 93, units = "mm")
 # }
 
+graph_list <- list()
+
 for (i in unique(banco_deputados2$SG_UF)) {
   banco_deputados3 <- banco_deputados2 %>% filter(SG_UF == i)
   a <- ggplot(banco_deputados3) +
@@ -69,9 +74,29 @@ for (i in unique(banco_deputados2$SG_UF)) {
     geom_point(colour = "#A11D21", size = 2) +
     labs(x = " Election Year", y = "Competitiveness") +
     theme_estat() +
-    ylim(0,1)
+    ylim(0,1) + ggtitle(i)
+  graph_list[[i]] <- a
   b <- paste("resultados/Stefan/Linhas_",i,".jpeg", sep = "")
   ggsave(filename = file.path(b), plot = a, width = 158, height = 93, units = "mm")
 }
 
+grid_norte <- grid.arrange(graph_list[[1]],graph_list[[25]],graph_list[[3]],graph_list[[12]],graph_list[[19]],graph_list[[27]],graph_list[[24]], ncol = 4)
 
+ggsave("resultados/Matilda/Linhas_Norte.jpeg", plot = grid_norte)
+
+grid_sul <- grid.arrange(graph_list[[16]],graph_list[[21]],graph_list[[20]], ncol = 2)
+
+ggsave("resultados/Matilda/Linhas_Sul.jpeg", plot = grid_sul)
+
+grid_co <- grid.arrange(graph_list[[7]],graph_list[[11]],graph_list[[10]],graph_list[[26]], ncol = 2)
+
+ggsave("resultados/Matilda/Linhas_CO.jpeg", plot = grid_co)
+
+grid_sud <- grid.arrange(graph_list[[6]],graph_list[[9]],graph_list[[17]],graph_list[[23]], ncol = 2)
+
+ggsave("resultados/Matilda/Linhas_Sudeste.jpeg", plot = grid_sud)
+
+grid_nord <- grid.arrange(graph_list[[2]],graph_list[[4]],graph_list[[5]],graph_list[[8]],graph_list[[13]], graph_list[[14]],
+                          graph_list[[15]],graph_list[[18]],graph_list[[22]], ncol = 3)
+
+ggsave("resultados/Matilda/Linhas_Nordeste.jpeg", plot = grid_nord)
