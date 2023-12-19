@@ -66,6 +66,13 @@ write.csv2(banco_deputados2, "IC_deputados.xlsx")
 
 graph_list <- list()
 
+banco_deputados2$SG_UF <- as.factor(banco_deputados2$SG_UF)
+
+levels(banco_deputados2$SG_UF) <- list("ACRE" ="AC" ,"ALAGOAS"="AL","AMAZONAS"="AM","AMAPÁ"="AP","BAHIA"="BA","CEARÁ"="CE","DISTRITO FEDERAL"="DF","ESPÍRITO SANTO"="ES","GOIÁS"="GO",
+                                       "MARANHÃO"="MA","MINAS GERAIS"="MG","MATO GROSSO DO SUL"="MS","MATO GROSSO"="MT","PARÁ"="PA","PARAÍBA"="PB","PIAUÍ"="PI","PARANÁ"="PR",
+                                       "RIO DE JANEIRO"="RJ","RIO GRANDE DO NORTE"="RN","RONDÔNIA"="RO","RORAIMA"="RR","RIO GRANDE DO SUL"="RS","SANTA CATARINA"="SC","SERGIPE"="SE",
+                                       "SÃO PAULO"="SP","TOCANTINS"="TO")
+
 for (i in unique(banco_deputados2$SG_UF)) {
   banco_deputados3 <- banco_deputados2 %>% filter(SG_UF == i)
   a <- ggplot(banco_deputados3) +
@@ -73,7 +80,7 @@ for (i in unique(banco_deputados2$SG_UF)) {
     geom_line(size = 1, colour = "#A11D21") +
     geom_point(colour = "#A11D21", size = 2) +
     labs(x = " Election Year", y = "Competitiveness") +
-    theme_estat() +
+    theme_estat(axis.text.x = element_text(size = 15,angle = 75, vjust = .65),axis.text.y = element_text(size = 15)) +
     ylim(0,1) + ggtitle(i)
   graph_list[[i]] <- a
   b <- paste("resultados/Stefan/Linhas_",i,".jpeg", sep = "")
